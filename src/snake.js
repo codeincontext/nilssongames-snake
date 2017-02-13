@@ -115,4 +115,4 @@ function snake(game) {
   }
 }
 
-module.exports = snake;
+export default snake;
