@@ -1,12 +1,12 @@
 import React from 'react';
-import styles from './index.css';
+import styles from './styles.js';
 
 export default class Section extends React.Component {
   render() {
     const {children} = this.props;
 
     return (
-      <div className={styles.section}>
+      <div style={styles.section}>
         {children}
       </div>
     );

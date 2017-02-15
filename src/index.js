@@ -7,7 +7,7 @@ import snake from './snake.js';
 import isCollision from './is-collision.js';
 import apple from './apple.js';
 import eatApple from './eat-apple.js';
-import styles from './index.css';
+import styles from './styles.js';
 
 const game = {
   numberOfPlayers: 1,
@@ -220,7 +220,7 @@ export default class NilssongamesSnake extends React.Component {
     const {numberOfPlayers, speed, gameOver, score, highScore} = this.state;
 
     return (
-      <div className={styles.snake}>
+      <div style={styles.snake}>
         <Section>
           <Button isSelected={numberOfPlayers === 1} isDisabled={!gameOver} handleClick={this.handlePlayerChange} value={1}>
             {human}
@@ -251,7 +251,7 @@ export default class NilssongamesSnake extends React.Component {
           <p>Score: {score}</p>
           <p>High score: {highScore}</p>
         </Section>
-        <canvas className={styles.snake__canvas} width={game.canvasSize} height={game.canvasSize} ref="canvasEl" />
+        <canvas style={styles.snake__canvas} width={game.canvasSize} height={game.canvasSize} ref="canvasEl" />
       </div>
     );
   }

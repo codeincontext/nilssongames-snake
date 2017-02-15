@@ -1,11 +1,11 @@
 {
   "name": "nilssongames-snake",
-  "version": "0.0.5",
+  "version": "1.0.0",
   "description": "snake game that can be imported as a component in a react app",
-  "main": "dist.js",
+  "main": "lib/index.js",
   "scripts": {
-    "build": "babel --out-file dist.js index.js",
-    "prepublish": "babel --out-file dist.js index.js"
+    "build": "babel src -d lib",
+    "prepublish": "babel src -d lib"
   },
   "author": {
     "name": "Andreas Nilsson",
@@ -15,14 +15,14 @@
   "repository": "NaNdreas/nilssongames-snake",
   "license": "MIT",
   "files": [
-    "dist.js"
+    "lib"
   ],
   "engines": {
     "node": ">=4"
   },
   "devDependencies": {
     "babel-cli": "^6.23.0",
-    "babel-core": "^6.22.1",
+    "babel-core": "^6.23.1",
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.22.0",
     "babel-preset-stage-0": "^6.22.0"
