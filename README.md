@@ -21,7 +21,7 @@ export default MainApp;
 ```
 
 ## Webpack config in main project
-In some cases your project might break because you are using multiple versions of react. (main project using one, and npm module using its own). To avoid this, when npm linking you might have to include this in your webpack config in the main project:
+In some cases (for example when using npm link) your project might break because you are using multiple versions of react. (main project using one, and npm module using its own). To avoid this, when npm linking you might have to include this in your webpack config in the main project:
 ```
 resolve: {
   alias: {
