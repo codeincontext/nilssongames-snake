@@ -14,10 +14,6 @@ const isCollision = (currentSnake, game) => {
 
   // collision with other snakes
   game.snakes.forEach(function (snake) {
-    if (currentSnake.index === snake.index) {
-      return;
-    }
-
     // next frame's position of the head (this snake)
     var next = {
       x: currentSnake.head.x + (currentSnake.direction.x * currentSnake.size),
@@ -37,6 +33,11 @@ const isCollision = (currentSnake, game) => {
     });
 
     if (next.x === otherSnakeNext.x && next.y === otherSnakeNext.y) {
+      if (currentSnake.index === snake.index) {
+        // Don't check collision on own body on "next" position because it should be "collision"
+        return;
+      }
+
       collision = true;
     }
   });
