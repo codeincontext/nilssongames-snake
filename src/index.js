@@ -75,7 +75,7 @@ export default class NilssongamesSnake extends React.Component {
       game.snakes.push(new snake(game));
     }
 
-    if (!game.apples.length) {
+    if (!game.apples.length && game.numberOfPlayers === 1) {
       game.apples.push(new apple(game));
     }
 
