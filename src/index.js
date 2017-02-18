@@ -247,10 +247,12 @@ export default class NilssongamesSnake extends React.Component {
             New game
           </Button>
         </Section>
+
         <Section>
-          <p>Score: {score}</p>
+          <p>Score: {numberOfPlayers === 1 ? score : '-'}</p>
           <p>High score: {highScore}</p>
         </Section>
+
         <canvas style={styles.snake__canvas} width={game.canvasSize} height={game.canvasSize} ref="canvasEl" />
       </div>
     );
