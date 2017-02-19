@@ -28,7 +28,7 @@ function snake(game) {
 
   this.index = index;
   this.color = color[index];
-  this.width = game.canvasSize / 20;
+  this.width = game.board.width / 20;
   this.height = this.width;
   this.size = this.width;
   this.speed = game.speed;

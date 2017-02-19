@@ -2,11 +2,11 @@ const isCollision = (currentSnake, game) => {
   var collision = false;
 
   // check if snake is going off the canvas
-  if (currentSnake.direction.y === 1 && currentSnake.head.y >= (game.canvasSize - currentSnake.size)) {
+  if (currentSnake.direction.y === 1 && currentSnake.head.y >= (game.board.height - currentSnake.size)) {
     return true;
   } else if (currentSnake.direction.y === -1 && currentSnake.head.y <= 0) {
     return true;
-  } else if (currentSnake.direction.x === 1 && currentSnake.head.x >= (game.canvasSize - currentSnake.size)) {
+  } else if (currentSnake.direction.x === 1 && currentSnake.head.x >= (game.board.width - currentSnake.size)) {
     return true;
   } else if (currentSnake.direction.x === -1 && currentSnake.head.x <= 0) {
     return true;

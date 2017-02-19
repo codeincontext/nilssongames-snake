@@ -16,6 +16,12 @@ const game = {
   fps: 1000 / 30,
   countdown: 3,
   canvasSize: 400,
+  board: {
+    x: 0,
+    y: 40,
+    width: 400,
+    height: 360 // canvasSize - board.y
+  },
   startTime: null,
   time: 0,
   lastInterval: 0,
@@ -129,6 +135,8 @@ export default class NilssongamesSnake extends React.Component {
       draw.gameOver(context, game.canvasSize);
     }
 
+    draw.score(context, game);
+
     game.apples.forEach(apple => {
       apple.draw(context);
     });
@@ -209,6 +217,8 @@ export default class NilssongamesSnake extends React.Component {
 
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
+    var context = this.refs.canvasEl.getContext('2d');
+    draw.score(context, game);
   }
 
   componentWillUnmount() {
