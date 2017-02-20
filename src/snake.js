@@ -1,6 +1,7 @@
+import constants from './constants.js';
+const {states, difficulty} = constants;
+
 // Different values to give each snake a unique position/direction
-
-
 function snake(game) {
   const color = ['purple', 'teal'];
   const offsetX = [5, 15];
@@ -98,11 +99,11 @@ function snake(game) {
   this.draw = function (context) {
     var color = this.color;
 
-    if (game.gameOver && !this.gameOver) {
+    if (game.state === states.gameOver && !this.gameOver) {
       color = 'orange';
     }
 
-    if (game.gameOver && this.gameOver) {
+    if (game.state === states.gameOver && this.gameOver) {
       color = 'grey';
     }
 

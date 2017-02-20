@@ -1,13 +1,14 @@
 import React from 'react';
-import Button from './components/button';
-import Section from './components/section';
-import Icons from './components/icons';
 import draw from './draw.js';
 import snake from './snake.js';
 import isCollision from './is-collision.js';
 import apple from './apple.js';
 import eatApple from './eat-apple.js';
+import menu from './menu.js';
+import constants from './constants.js';
 import styles from './styles.js';
+
+const {states, difficulty} = constants;
 
 const game = {
   numberOfPlayers: 1,
@@ -28,53 +29,37 @@ const game = {
   snakes: [],
   apples: [],
   score: 0,
-  highScore: 0
+  highScore: 0,
+  state: states.menuPlayers,
+  currentMenu: 'playAgain'
 };
 
 export default class NilssongamesSnake extends React.Component {
   constructor() {
     super();
 
-    this.state = {
-      numberOfPlayers: game.numberOfPlayers,
-      speed: game.speed,
-      gameOver: game.gameOver,
-      score: game.score,
-      highScore: game.highScore
-    };
-
-    this.handlePlayerChange = this.handlePlayerChange.bind(this);
-    this.handleDifficultyChange = this.handleDifficultyChange.bind(this);
-    this.newGame = this.newGame.bind(this);
     this.loop = this.loop.bind(this);
-  }
-
-  handleDifficultyChange(e) {
-    const speed = parseInt(e.currentTarget.value);
-
-    game.speed = speed;
-    this.setState({speed});
-  }
-
-  handlePlayerChange(e) {
-    const numberOfPlayers = parseInt(e.currentTarget.value);
-
-    game.numberOfPlayers = numberOfPlayers;
-    this.setState({numberOfPlayers});
   }
 
   newGame() {
     game.snakes = [];
     game.apples = [];
     game.gameOver = false;
+    game.state = states.game;
     game.score = 0;
-    const {gameOver} = game;
-    this.setState({gameOver, score: 0});
-    window.requestAnimationFrame(this.loop);
+  }
+
+  init() {
+    game.state = states.menuPlayers;
+    requestAnimationFrame(this.loop);
   }
 
   update() {
     // All logic happens here, no canvas rendering
+
+    if (game.state === states.menuPlayers || game.state === states.menuDifficulty || game.state === states.gameOver) {
+      return;
+    }
 
     while (game.snakes.length < game.numberOfPlayers) {
       // TODO: do forEach numberofplayers and send an index to get different starting coordinates
@@ -96,12 +81,11 @@ export default class NilssongamesSnake extends React.Component {
         snake.gameOver = true;
         game.startTime = null;
         game.gameOver = true;
+        game.state = states.gameOver;
 
         if (game.score > game.highScore) {
           game.highScore = game.score;
-          this.setState({highScore: game.highScore});
         }
-        this.setState({gameOver: true});
         return;
       }
 
@@ -118,7 +102,6 @@ export default class NilssongamesSnake extends React.Component {
           game.apples[i] = new apple(game);
           snake.grow();
           game.score += game.speed;
-          this.setState({score: game.score});
         }
       });
     });
@@ -130,12 +113,17 @@ export default class NilssongamesSnake extends React.Component {
     var context = this.refs.canvasEl.getContext('2d');
 
     context.clearRect(0, 0, canvasSize, canvasSize);
+    draw.score(context, game);
 
-    if (game.gameOver) {
-      draw.gameOver(context, game.canvasSize);
+    if (game.state === states.menuPlayers || game.state === states.menuDifficulty) {
+      menu.draw(context, game);
+      return;
     }
 
-    draw.score(context, game);
+    if (game.state === states.gameOver) {
+      draw.gameOver(context, game.canvasSize);
+      menu.draw(context, game);
+    }
 
     game.apples.forEach(apple => {
       apple.draw(context);
@@ -163,15 +151,59 @@ export default class NilssongamesSnake extends React.Component {
       this.draw();
     }
 
-    if (game.gameOver) {
+    if (game.state === states.gameOver) {
       game.startTime = null;
-      return;
     }
 
     requestAnimationFrame(this.loop);
   }
 
   handleKeyDown(e) {
+    if (game.state === states.menuPlayers) {
+      if (e.keyCode === 40) {
+        game.numberOfPlayers = 2;
+      } else if (e.keyCode === 38) {
+        game.numberOfPlayers = 1;
+      } else if (e.keyCode === 13 || e.keyCode === 32) {
+        game.state = states.menuDifficulty;
+      }
+      return;
+    }
+
+    if (game.state === states.menuDifficulty) {
+      if (e.keyCode === 40) {
+        if (game.speed === difficulty.easy) {
+          game.speed = difficulty.medium;
+        } else if (game.speed === difficulty.medium) {
+          game.speed = difficulty.hard;
+        }
+      } else if (e.keyCode === 38) {
+        if (game.speed === difficulty.hard) {
+          game.speed = difficulty.medium;
+        } else if (game.speed === difficulty.medium) {
+          game.speed = difficulty.easy;
+        }
+      } else if (e.keyCode === 13 || e.keyCode === 32) {
+        game.state = states.game;
+      }
+      return;
+    }
+
+    if (game.state === states.gameOver) {
+      if (e.keyCode === 40) {
+        game.currentMenu = 'playAgain';
+      } else if (e.keyCode === 38) {
+        game.currentMenu = 'mainMenu';
+      } else if (e.keyCode === 13 || e.keyCode === 32) {
+        if (game.currentMenu === 'mainMenu') {
+          game.state = states.menuDifficulty;
+        } else if (game.currentMenu === 'playAgain') {
+          game.state = states.game;
+        }
+      }
+      return;
+    }
+
     game.snakes.forEach(snake => {
       if (snake.controlKeys[e.keyCode]) {
         e.preventDefault();
@@ -217,8 +249,7 @@ export default class NilssongamesSnake extends React.Component {
 
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
-    var context = this.refs.canvasEl.getContext('2d');
-    draw.score(context, game);
+    this.init();
   }
 
   componentWillUnmount() {
@@ -226,43 +257,8 @@ export default class NilssongamesSnake extends React.Component {
   }
 
   render() {
-    const {human} = Icons;
-    const {numberOfPlayers, speed, gameOver, score, highScore} = this.state;
-
     return (
       <div style={styles.snake}>
-        <Section>
-          <Button isSelected={numberOfPlayers === 1} isDisabled={!gameOver} handleClick={this.handlePlayerChange} value={1}>
-            {human}
-          </Button>
-          <Button isSelected={numberOfPlayers === 2} isDisabled={!gameOver} handleClick={this.handlePlayerChange} value={2}>
-            {human} {human}
-          </Button>
-        </Section>
-
-        <Section>
-          <Button isSelected={speed === 1} isDisabled={!gameOver} handleClick={this.handleDifficultyChange} value={1}>
-            Easy
-          </Button>
-          <Button isSelected={speed === 2} isDisabled={!gameOver} handleClick={this.handleDifficultyChange} value={2}>
-            Normal
-          </Button>
-          <Button isSelected={speed === 5} isDisabled={!gameOver} handleClick={this.handleDifficultyChange} value={5}>
-            Hard
-          </Button>
-        </Section>
-
-        <Section>
-          <Button isDisabled={!gameOver} handleClick={this.newGame}>
-            New game
-          </Button>
-        </Section>
-
-        <Section>
-          <p>Score: {numberOfPlayers === 1 ? score : '-'}</p>
-          <p>High score: {highScore}</p>
-        </Section>
-
         <canvas style={styles.snake__canvas} width={game.canvasSize} height={game.canvasSize} ref="canvasEl" />
       </div>
     );
