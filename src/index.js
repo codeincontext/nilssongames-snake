@@ -79,7 +79,6 @@ export default class NilssongamesSnake extends React.Component {
     game.snakes.forEach(snake => {
       if (isCollision(snake, game) || snake.gameOver) {
         snake.gameOver = true;
-        game.startTime = null;
         game.gameOver = true;
         game.state = states.gameOver;
 
@@ -151,7 +150,7 @@ export default class NilssongamesSnake extends React.Component {
       this.draw();
     }
 
-    if (game.state === states.gameOver) {
+    if (game.state === states.countdown) {
       game.startTime = null;
     }
 
@@ -191,14 +190,14 @@ export default class NilssongamesSnake extends React.Component {
 
     if (game.state === states.gameOver) {
       if (e.keyCode === 40) {
-        game.currentMenu = 'playAgain';
-      } else if (e.keyCode === 38) {
         game.currentMenu = 'mainMenu';
+      } else if (e.keyCode === 38) {
+        game.currentMenu = 'playAgain';
       } else if (e.keyCode === 13 || e.keyCode === 32) {
         if (game.currentMenu === 'mainMenu') {
           game.state = states.menuDifficulty;
         } else if (game.currentMenu === 'playAgain') {
-          game.state = states.game;
+          game.state = states.countdown;
         }
       }
       return;

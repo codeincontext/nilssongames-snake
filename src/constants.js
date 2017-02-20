@@ -2,8 +2,9 @@ const constants = {
   states: {
     menuPlayers: 0,
     menuDifficulty: 1,
-    game: 2,
-    gameOver: 3
+    countdown: 2,
+    game: 3,
+    gameOver: 4
   },
 
   difficulty: {

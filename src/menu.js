@@ -38,6 +38,7 @@ const menu = {
     }
 
     if (game.state === states.gameOver) {
+      console.log(game.currentMenu);
       context.font = '16px Arial';
       context.fillStyle = game.currentMenu === 'playAgain' ? 'gold' : '#888';
       context.fillText('Play again', game.canvasSize / 2, game.canvasSize / 1.5);
