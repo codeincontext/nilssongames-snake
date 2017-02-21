@@ -163,6 +163,10 @@ export default class NilssongamesSnake extends React.Component {
   }
 
   handleKeyDown(e) {
+    if (e.keyCode === 40 || e.keyCode === 38 || e.keyCode === 13 || e.keyCode === 32) {
+        e.preventDefault();
+    }
+
     if (game.state === states.menuPlayers) {
       if (e.keyCode === 40) {
         game.numberOfPlayers = 2;
