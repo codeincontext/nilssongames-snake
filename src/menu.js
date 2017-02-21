@@ -10,11 +10,21 @@ const menu = {
       context.fillStyle = '#888';
       context.fillText('Snake', game.canvasSize / 2, game.canvasSize / 4);
 
+      if (game.numberOfPlayers === 1) {
+        context.fillStyle = '#888';
+        context.fillRect(game.canvasSize / 2 - 50, game.canvasSize / 1.61, 100, 25);
+      }
+
       context.font = '16px Arial';
-      context.fillStyle = game.numberOfPlayers === 1 ? 'gold' : '#888';
+      context.fillStyle = game.numberOfPlayers === 1 ? 'white' : '#888';
       context.fillText('1 player', game.canvasSize / 2, game.canvasSize / 1.5);
 
-      context.fillStyle = game.numberOfPlayers === 2 ? 'gold' : '#888';
+      if (game.numberOfPlayers === 2) {
+        context.fillStyle = '#888';
+        context.fillRect(game.canvasSize / 2 - 50, game.canvasSize / 1.38, 100, 25);
+      }
+
+      context.fillStyle = game.numberOfPlayers === 2 ? 'white' : '#888';
       context.fillText('2 players', game.canvasSize / 2, game.canvasSize / 1.3);
       return;
     }
@@ -25,25 +35,50 @@ const menu = {
       context.fillStyle = '#888';
       context.fillText('Snake', game.canvasSize / 2, game.canvasSize / 4);
 
+      if (game.speed === difficulty.easy) {
+        context.fillStyle = '#888';
+        context.fillRect(game.canvasSize / 2 - 50, game.canvasSize / 1.61, 100, 25);
+      }
+
       context.font = '16px Arial';
-      context.fillStyle = game.speed === difficulty.easy ? 'gold' : '#888';
+      context.fillStyle = game.speed === difficulty.easy ? 'white' : '#888';
       context.fillText('Easy', game.canvasSize / 2, game.canvasSize / 1.5);
 
-      context.fillStyle = game.speed === difficulty.medium ? 'gold' : '#888';
+      if (game.speed === difficulty.medium) {
+        context.fillStyle = '#888';
+        context.fillRect(game.canvasSize / 2 - 50, game.canvasSize / 1.38, 100, 25);
+      }
+
+      context.fillStyle = game.speed === difficulty.medium ? 'white' : '#888';
       context.fillText('Medium', game.canvasSize / 2, game.canvasSize / 1.3);
 
-      context.fillStyle = game.speed === difficulty.hard ? 'gold' : '#888';
+      if (game.speed === difficulty.hard) {
+        context.fillStyle = '#888';
+        context.fillRect(game.canvasSize / 2 - 50, game.canvasSize / 1.21, 100, 25);
+      }
+
+      context.fillStyle = game.speed === difficulty.hard ? 'white' : '#888';
       context.fillText('Hard', game.canvasSize / 2, game.canvasSize / 1.15);
       return;
     }
 
     if (game.state === states.gameOver) {
-      console.log(game.currentMenu);
       context.font = '16px Arial';
-      context.fillStyle = game.currentMenu === 'playAgain' ? 'gold' : '#888';
+
+      if (game.currentMenu === 'playAgain') {
+        context.fillStyle = '#888';
+        context.fillRect(game.canvasSize / 2 - 50, game.canvasSize / 1.61, 100, 25);
+      }
+
+      context.fillStyle = game.currentMenu === 'playAgain' ? 'white' : '#888';
       context.fillText('Play again', game.canvasSize / 2, game.canvasSize / 1.5);
 
-      context.fillStyle = game.currentMenu === 'mainMenu' ? 'gold' : '#888';
+      if (game.currentMenu === 'mainMenu') {
+        context.fillStyle = '#888';
+        context.fillRect(game.canvasSize / 2 - 50, game.canvasSize / 1.38, 100, 25);
+      }
+
+      context.fillStyle = game.currentMenu === 'mainMenu' ? 'white' : '#888';
       context.fillText('Main menu', game.canvasSize / 2, game.canvasSize / 1.3);
       return;
     }

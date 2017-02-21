@@ -34,19 +34,30 @@ const game = {
   currentMenu: 'playAgain'
 };
 
+function newGame() {
+  game.snakes = [];
+  game.apples = [];
+  game.gameOver = false;
+  game.state = states.game;
+  game.score = 0;
+  game.startTime = null;
+}
+
+function gameOver() {
+  game.gameOver = true;
+  game.state = states.gameOver;
+
+  if (game.score > game.highScore) {
+    game.highScore = game.score;
+    game.currentMenu = 'playAgain';
+  }
+}
+
 export default class NilssongamesSnake extends React.Component {
   constructor() {
     super();
 
     this.loop = this.loop.bind(this);
-  }
-
-  newGame() {
-    game.snakes = [];
-    game.apples = [];
-    game.gameOver = false;
-    game.state = states.game;
-    game.score = 0;
   }
 
   init() {
@@ -57,7 +68,7 @@ export default class NilssongamesSnake extends React.Component {
   update() {
     // All logic happens here, no canvas rendering
 
-    if (game.state === states.menuPlayers || game.state === states.menuDifficulty || game.state === states.gameOver) {
+    if (game.state !== states.game) {
       return;
     }
 
@@ -79,12 +90,7 @@ export default class NilssongamesSnake extends React.Component {
     game.snakes.forEach(snake => {
       if (isCollision(snake, game) || snake.gameOver) {
         snake.gameOver = true;
-        game.gameOver = true;
-        game.state = states.gameOver;
-
-        if (game.score > game.highScore) {
-          game.highScore = game.score;
-        }
+        gameOver();
         return;
       }
 
@@ -119,17 +125,20 @@ export default class NilssongamesSnake extends React.Component {
       return;
     }
 
+
+    game.apples.forEach(apple => {
+      apple.draw(context);
+    });
+
+    game.snakes.forEach(snake => {
+      snake.draw(context);
+    });
+
     if (game.state === states.gameOver) {
       draw.gameOver(context, game.canvasSize);
       menu.draw(context, game);
     }
 
-    game.apples.forEach(apple => {
-      apple.draw(context);
-    });
-    game.snakes.forEach(snake => {
-      snake.draw(context);
-    });
     draw.countdown(context, game);
   }
 
@@ -148,10 +157,6 @@ export default class NilssongamesSnake extends React.Component {
       game.lastInterval = game.time;
       this.update();
       this.draw();
-    }
-
-    if (game.state === states.countdown) {
-      game.startTime = null;
     }
 
     requestAnimationFrame(this.loop);
@@ -183,7 +188,7 @@ export default class NilssongamesSnake extends React.Component {
           game.speed = difficulty.easy;
         }
       } else if (e.keyCode === 13 || e.keyCode === 32) {
-        game.state = states.game;
+        newGame();
       }
       return;
     }
@@ -195,9 +200,9 @@ export default class NilssongamesSnake extends React.Component {
         game.currentMenu = 'playAgain';
       } else if (e.keyCode === 13 || e.keyCode === 32) {
         if (game.currentMenu === 'mainMenu') {
-          game.state = states.menuDifficulty;
+          game.state = states.menuPlayers;
         } else if (game.currentMenu === 'playAgain') {
-          game.state = states.countdown;
+          newGame();
         }
       }
       return;

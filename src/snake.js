@@ -4,10 +4,10 @@ const {states, difficulty} = constants;
 // Different values to give each snake a unique position/direction
 function snake(game) {
   const color = ['purple', 'teal'];
-  const offsetX = [5, 15];
-  const offsetY = [5, 15];
-  const tailOffsetX = [[2, 3, 4], [18, 17, 16]];
-  const directionX = [1, -1];
+  const offsetX = [15, 5];
+  const offsetY = [15, 5];
+  const tailOffsetX = [[18, 17, 16], [2, 3, 4]];
+  const directionX = [-1, 1];
   const directionY = [0, 0];
   const controls = [
     {
