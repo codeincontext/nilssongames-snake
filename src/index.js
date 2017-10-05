@@ -115,7 +115,7 @@ export default class NilssongamesSnake extends React.Component {
   draw() {
     // Render the canvas only, no variables should change
     const {canvasSize} = game;
-    var context = this.refs.canvasEl.getContext('2d');
+    var context = this.canvas.getContext('2d');
 
     context.clearRect(0, 0, canvasSize, canvasSize);
     draw.score(context, game);
@@ -267,7 +267,7 @@ export default class NilssongamesSnake extends React.Component {
   render() {
     return (
       <div style={styles.snake}>
-        <canvas style={styles.snake__canvas} width={game.canvasSize} height={game.canvasSize} ref="canvasEl" />
+        <canvas style={styles.snake__canvas} width={game.canvasSize} height={game.canvasSize} ref={el => this.canvas = el} />
       </div>
     );
   }
